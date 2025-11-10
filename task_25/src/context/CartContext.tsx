@@ -3,9 +3,9 @@ import type { TCart, TProducts } from '../components/ListProducts';
 
 type CartContextType = {
     cart: TCart[];
-    handleAddToCart: (item: TProducts) => void;
+    handleAddToCart: (item: TProducts | TCart) => void;
     total: number;
-    removeToCart: (item: TCart) => void;
+    removeToCart: (item: TProducts ) => void;
 };
 export const CartContext = createContext<CartContextType>({
     cart: [],

@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { CartContext } from '../context/CartContext';
-import type { TProducts } from './ListProducts';
 
 type Props = {
     openCart: boolean;
@@ -35,13 +34,15 @@ const SidebarCart = ({ openCart, setOpenCart }: Props) => {
                                         style={{ width: '60px', height: '60px', objectFit: 'cover' }}
                                     />
                                     <div className="flex-grow-1 ms-2">
-                                        <div className="fw-semibold">Sản phẩm A</div>
+                                        <div className="fw-semibold">{item.title}</div>
 
-                                        <div
-                                            className="d-flex align-items-center gap-2 mt-1"
-                                            onClick={() => cartItem.removeToCart(item)}
-                                        >
-                                            <button className="btn btn-sm btn-outline-secondary">-</button>
+                                        <div className="d-flex align-items-center gap-2 mt-1">
+                                            <button
+                                                className="btn btn-sm btn-outline-secondary"
+                                                onClick={() => cartItem.removeToCart(item)}
+                                            >
+                                                -
+                                            </button>
                                             <span className="fw-semibold">{item.quantity}</span>
                                             <button
                                                 className="btn btn-sm btn-outline-secondary"

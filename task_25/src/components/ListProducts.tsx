@@ -3,7 +3,7 @@ import { getProducts } from '../axios/products.api';
 import { CartContext } from '../context/CartContext';
 
 export type TProducts = {
-    id: string;
+    id: string | number;
     title: string;
     description: string;
     price: number;
