@@ -1,17 +1,19 @@
-import React, { useContext, useState } from 'react';
+import  { useContext, useState } from 'react';
 import { CartContext } from '../context/CartContext';
 import SidebarCart from './SidebarCart';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
-    const cartItem = useContext(CartContext);
+    const { state } = useContext(CartContext);
     const [openCart, setOpenCart] = useState(false);
     return (
         <div>
-            <header className="container-fluid shadow-sm bg-light py-3 d-flex align-items-center justify-content-between">
+            <header className="container-fluid shadow-sm position-fixed  bg-light py-3 d-flex align-items-center justify-content-between z-3">
                 {/* Logo */}
                 <div className="d-flex align-items-center gap-2">
-                    <i className="fa-solid fa-store fs-4"></i>
-                    <span className="fs-4 fw-bold">MyShop</span>
+                    
+                    <i className="fa-solid fa-store fs-4"><Link to={"/"}>MyShop</Link></i>
+                    <span className="fs-4 fw-bold"></span>
                 </div>
 
                 {/* Search */}
@@ -22,18 +24,25 @@ const Header = () => {
                 {/* Right icons */}
                 <div className="d-flex align-items-center gap-4 fs-5">
                     <div
-                        className="position-relative d-flex align-items-center gap-1 cursor-pointer"
-                        onClick={() => setOpenCart(true)}
+                        className="position-relative"
+                        onMouseEnter={() => setOpenCart(true)}
+                        onMouseLeave={() => {
+                            setOpenCart(false);
+                        }}
                     >
-                        <i className="fa-solid fa-cart-shopping"></i>
-                        <span className="d-none d-sm-block small">Cart</span>
-                        <span className="badge bg-danger position-absolute top-0 start-100 translate-middle rounded-pill">
-                            {cartItem.cart.length}
-                        </span>
+                        <div className="d-flex align-items-center gap-1 cursor-pointer">
+                            <Link to="/cart">
+                                <i className="fa-solid fa-cart-shopping"></i>
+                            </Link>
+
+                            <span className="badge bg-danger position-absolute top-0 start-100 translate-middle rounded-pill">
+                                {state.carts.length}
+                            </span>
+                        </div>
+                        <SidebarCart openCart={openCart} setOpenCart={setOpenCart} />
                     </div>
                 </div>
             </header>
-            <SidebarCart openCart={openCart} setOpenCart={setOpenCart} />
         </div>
     );
 };

@@ -1,5 +1,7 @@
-import React, { useContext } from 'react';
+import  { useContext } from 'react';
 import { CartContext } from '../context/CartContext';
+import type { TCart } from '../types/Carts';
+import { Link } from 'react-router-dom';
 
 type Props = {
     openCart: boolean;
@@ -7,12 +9,15 @@ type Props = {
 };
 
 const SidebarCart = ({ openCart, setOpenCart }: Props) => {
-    const cartItem = useContext(CartContext);
+    const { state, dispatch } = useContext(CartContext);
+    const subTotal = state.carts.reduce((acc, cur) => {
+        return acc + cur.price * cur.quantity;
+    }, 0).toFixed(2);
     return (
         <div>
             {openCart && (
                 <div
-                    className="position-fixed top-0 end-0 bg-white border shadow p-3"
+                    className="position-fixed top-4 end-0 bg-white border shadow p-3"
                     style={{ width: '350px', height: '100vh', zIndex: 1050 }}
                 >
                     <div className="d-flex justify-content-between align-items-center mb-3">
@@ -24,7 +29,8 @@ const SidebarCart = ({ openCart, setOpenCart }: Props) => {
 
                     {/* Cart Items */}
                     <div className="mb-3">
-                        {cartItem.cart.map((item) => {
+                        {state.carts.map((item: TCart) => {
+                            const total = (item.price * item.quantity).toFixed(2);
                             return (
                                 <div className="d-flex justify-content-between mb-3" key={item.id}>
                                     <img
@@ -39,20 +45,27 @@ const SidebarCart = ({ openCart, setOpenCart }: Props) => {
                                         <div className="d-flex align-items-center gap-2 mt-1">
                                             <button
                                                 className="btn btn-sm btn-outline-secondary"
-                                                onClick={() => cartItem.removeToCart(item)}
+                                                onClick={() => dispatch({ type: 'DECREASE TO CART', payload: item })}
                                             >
                                                 -
                                             </button>
                                             <span className="fw-semibold">{item.quantity}</span>
                                             <button
                                                 className="btn btn-sm btn-outline-secondary"
-                                                onClick={() => cartItem.handleAddToCart(item)}
+                                                onClick={() => dispatch({ type: 'ADD TO CART', payload: item })}
                                             >
                                                 +
                                             </button>
+
+                                            <button
+                                                className="btn btn-sm btn btn-danger"
+                                                onClick={() => dispatch({ type: 'REMOVE TO CART', payload: item })}
+                                            >
+                                                <i className="fa-solid fa-trash "></i>
+                                            </button>
                                         </div>
                                     </div>
-                                    <span style={{ color: 'red' }}>{item.price}</span>
+                                    <span style={{ color: 'red' }}>{total}</span>
                                 </div>
                             );
                         })}
@@ -61,9 +74,9 @@ const SidebarCart = ({ openCart, setOpenCart }: Props) => {
                     <div className="border-top pt-3">
                         <div className="d-flex justify-content-between fw-bold mb-2">
                             <span>Tổng:</span>
-                            <span>{cartItem.total}</span>
+                            <span>{subTotal}</span>
                         </div>
-                        <button className="btn btn-primary w-100">Thanh toán</button>
+                        <button className="btn btn-primary w-100"><Link className="text-white " to={'/cart'}>Thanh toán</Link></button>
                     </div>
                 </div>
             )}
