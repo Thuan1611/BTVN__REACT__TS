@@ -1,5 +1,5 @@
 /* eslint-disable no-case-declarations */
-import React, { useEffect, useReducer } from 'react';
+import { useEffect, useReducer } from 'react';
 import type { TProducts } from '../types/Products';
 import { getProducts } from '../axios/products.api';
 type Action =
